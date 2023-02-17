@@ -46,3 +46,26 @@ var questions = [{
   d: "4. <script name='code.js'>",
   correct: "1. <script src='code.js'>",
 }];
+var startQuiz = document.getElementById("start-quiz");
+var countdown = document.getElementById("timer");
+var timerStart = 60;
+var quizLength;
+var questionContainer = document.querySelector("#quiz-wrapper");
+
+function timer() {
+    countdown.textContent = "Time remaining: " + timerStart + "s";
+    quizLength = setInterval(function () {
+        if (timerStart > 0) {
+            adjustTime(-1);
+        } else {
+            finalResult();
+        }
+    }, 1000);
+}
+function adjustTime(amount) {
+    timerStart += amount;
+    if (timerStart < 0) {
+        timerStart = 0;
+    }
+    countdown.textContent = "Time remaining: " + timerStart + "s";
+}
