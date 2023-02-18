@@ -46,6 +46,7 @@ var questions = [{
   d: "4. <script name='code.js'>",
   correct: "1. <script src='code.js'>",
 }];
+
 var startQuiz = document.getElementById("start-quiz");
 var countdown = document.getElementById("timer");
 var timerStart = 60;
@@ -53,51 +54,58 @@ var quizLength;
 var questionContainer = document.querySelector("#quiz-wrapper");
 
 function timer() {
-    countdown.textContent = "Time remaining: " + timerStart + "s";
-    quizLength = setInterval(function () {
-        if (timerStart > 0) {
-            adjustTime(-1);
-        } else {
-            finalResult();
-        }
-    }, 1000);
+  countdown.textContent = "Time remaining: " + timerStart + "s";
+  quizLength = setInterval(function () {
+      if (timerStart > 0) {
+          adjustTime(-1);
+      } else {
+          finalResult();
+      }
+  }, 1000);
 }
 function adjustTime(amount) {
-    timerStart += amount;
-    if (timerStart < 0) {
-        timerStart = 0;
-    }
-    countdown.textContent = "Time remaining: " + timerStart + "s";
+  timerStart += amount;
+  if (timerStart < 0) {
+      timerStart = 0;
+  }
+  countdown.textContent = "Time remaining: " + timerStart + "s";
 }
+
 startQuiz.onclick = timer;
 var renderQuestion = function (question) {
-    questionContainer.innerHTML = "";
+  questionContainer.innerHTML = "";
 
-    var questionHeader = document.createElement("h2");
-    questionHeader.textContent = question.q;
+  var questionHeader = document.createElement("h2");
+  questionHeader.textContent = question.q;
 
-    var answerA = document.createElement("button");
-    answerA.textContent = question.a;
-    answerA.addEventListener("click", answerClick);
+  var answerA = document.createElement("button");
+  answerA.textContent = question.a;
+  answerA.addEventListener("click", answerClick);
 
-    var answerB = document.createElement("button");
-    answerB.textContent = question.b;
-    answerB.addEventListener("click", answerClick);
+  var answerB = document.createElement("button");
+  answerB.textContent = question.b;
+  answerB.addEventListener("click", answerClick);
 
-    var answerC = document.createElement("button");
-    answerC.textContent = question.c;
-    answerC.addEventListener("click", answerClick);
+  var answerC = document.createElement("button");
+  answerC.textContent = question.c;
+  answerC.addEventListener("click", answerClick);
 
-    var answerD = document.createElement("button");
-    answerD.textContent = question.d;
-    answerD.addEventListener("click", answerClick);
+  var answerD = document.createElement("button");
+  answerD.textContent = question.d;
+  answerD.addEventListener("click", answerClick);
 
-    questionContainer.appendChild(questionHeader);
-    questionContainer.appendChild(answerA);
-    questionContainer.appendChild(answerB);
-    questionContainer.appendChild(answerC);
-    questionContainer.appendChild(answerD);
+  questionContainer.appendChild(questionHeader);
+  questionContainer.appendChild(answerA);
+  questionContainer.appendChild(answerB);
+  questionContainer.appendChild(answerC);
+  questionContainer.appendChild(answerD);
 }
+
+var currentQuestionIndex = 0;
+var userScore = 0;
+var correctAnswer = questions[currentQuestionIndex].correct;
+var viewScores = document.getElementById("view-highscore");
+
 var answerClick = function(event) {
   event.preventDefault();
   var userAnswer = event.target.textContent;
@@ -159,3 +167,57 @@ viewScores.addEventListener("click", () => {
   highScores();
   
 })
+
+var initials; 
+function finalResult() {
+  resetDisplay();
+  countdown.textContent = "";
+  clearInterval(quizLength);
+  var endPage = document.createElement("h2");
+  questionContainer.appendChild(endPage);
+
+  let blank = document.querySelector("#answer-prompt");
+  blank.innerHTML = "";
+  
+  endPage.innerHTML = "Your final score is " + userScore + ". Enter your initials:";
+
+  var initialBox = document.createElement("input");
+  blank.appendChild(initialBox);
+
+  var submitInitialBtn = document.createElement("button");
+  submitInitialBtn.textContent = "Submit";
+  blank.appendChild(submitInitialBtn);
+
+  var playAgain = document.createElement("button");
+      playAgain.textContent= "Play Again!";
+      blank.appendChild(playAgain);
+
+      playAgain.addEventListener("click", () => {
+          location.reload();
+      })
+
+  submitInitialBtn.addEventListener("click", () => {
+      
+      if (initialBox.value.length === 0) return false;
+
+      let storeInitials = (...input) => {
+          let data = JSON.stringify({ "name":input[0], "score":input[1]})
+          localStorage.setItem("object", data)
+      }
+      storeInitials(initialBox.value, userScore);
+
+      
+  });
+
+  document.querySelector("input").value = "";
+
+  initialBox.addEventListener("submit", finalResult);
+  
+};
+function renderInitials() {
+  submitInitialBtn.addEventListener('click', function(event) {
+      event.preventDefault;
+}
+)};
+
+startQuiz.addEventListener('click', quiz);
