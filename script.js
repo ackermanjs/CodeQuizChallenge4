@@ -122,3 +122,40 @@ var answerClick = function(event) {
       } else {renderQuestion(questions[currentQuestionIndex])};
   }
 };
+
+var quiz = function (event) {
+  event.preventDefault();
+  resetDisplay();
+  renderQuestion(questions[currentQuestionIndex]);
+};
+
+function resetDisplay() {
+  questionContainer.innerHTML="";
+  document.querySelector("#intro-wrapper").style.display = "none";
+  document.querySelector("#quiz-wrapper").style.display = "block";
+}
+function highScores() {
+  let data = localStorage.getItem("object");
+  let getData = JSON.parse(data);
+  let name = getData.name;
+  let score = getData.score;
+  questionContainer.innerHTML = "";
+  questionContainer.innerHTML = name + " " + score;
+  document.querySelector("#intro-wrapper").style.display = "none";
+
+  let blank = document.querySelector("#answer-prompt");
+  blank.innerHTML = "";
+
+  var playAgain = document.createElement("button");
+      playAgain.textContent= "Play Again!";
+      blank.appendChild(playAgain);
+
+      playAgain.addEventListener("click", () => {
+          location.reload();
+      })
+  
+}
+viewScores.addEventListener("click", () => {
+  highScores();
+  
+})
