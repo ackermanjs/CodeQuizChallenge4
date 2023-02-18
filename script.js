@@ -69,3 +69,56 @@ function adjustTime(amount) {
     }
     countdown.textContent = "Time remaining: " + timerStart + "s";
 }
+startQuiz.onclick = timer;
+var renderQuestion = function (question) {
+    questionContainer.innerHTML = "";
+
+    var questionHeader = document.createElement("h2");
+    questionHeader.textContent = question.q;
+
+    var answerA = document.createElement("button");
+    answerA.textContent = question.a;
+    answerA.addEventListener("click", answerClick);
+
+    var answerB = document.createElement("button");
+    answerB.textContent = question.b;
+    answerB.addEventListener("click", answerClick);
+
+    var answerC = document.createElement("button");
+    answerC.textContent = question.c;
+    answerC.addEventListener("click", answerClick);
+
+    var answerD = document.createElement("button");
+    answerD.textContent = question.d;
+    answerD.addEventListener("click", answerClick);
+
+    questionContainer.appendChild(questionHeader);
+    questionContainer.appendChild(answerA);
+    questionContainer.appendChild(answerB);
+    questionContainer.appendChild(answerC);
+    questionContainer.appendChild(answerD);
+}
+var answerClick = function(event) {
+  event.preventDefault();
+  var userAnswer = event.target.textContent;
+  correctAnswer = questions[currentQuestionIndex].correct;
+  // determine if answer is wrong or right
+  var answerNotice = document.querySelector("#answer-prompt");
+  if (userAnswer !== correctAnswer) {
+      adjustTime(-10);
+      answerNotice.textContent = "Wrong!";
+      currentQuestionIndex++;
+      if (currentQuestionIndex >= questions.length) {
+          finalResult();
+      } else {renderQuestion(questions[currentQuestionIndex])};
+
+  }
+  else if (userAnswer === correctAnswer) {
+      currentQuestionIndex++;
+      answerNotice.textContent = "Correct!";
+      userScore++;
+      if (currentQuestionIndex >= questions.length) {
+          finalResult();
+      } else {renderQuestion(questions[currentQuestionIndex])};
+  }
+};
