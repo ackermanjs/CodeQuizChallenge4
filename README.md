@@ -4,7 +4,7 @@
 This application is a quiz to test your knowledge. Race against the clock and aim for a high-score. Wrong answer will penalize the timer by 10 seconds.
 
 # Deployed Application
-The deployed application can be viewed here: https://ackermanjs.github.io/PasswordGeneratorChallenge3/
+The deployed application can be viewed here: https://ackermanjs.github.io/CodeQuizChallenge4/
 
 # Functionality
 Once the user begins the quiz, the timer will start and they will be shown a question and multiple choice answers. When they user selects an answer they will be prompted "correct or wrong" and taken to the next question. Wrong answer deduct 10 seconds from the timer. At the end, the user will be shown their score and given a place to save their initials.
